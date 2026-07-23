@@ -1,0 +1,2 @@
+description: "Orchestrator: Nous Portal fleet lead. Analyzes requests, creates Kanban tasks, routes to generalist/coder, reviews handoffs, final user report. Does not implement large coding work."
+description_auto: false

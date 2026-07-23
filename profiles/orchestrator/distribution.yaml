@@ -1,0 +1,18 @@
+name: orchestrator
+version: 1.0.0
+description: >-
+  Fleet lead for Hermes Kanban. Analyzes user requests, splits work into
+  kanban tasks, routes to generalist/coder, reviews handoffs, reports back.
+hermes_requires: ">=0.19.0"
+author: keepConcentration
+license: MIT
+env_requires:
+  - name: DISCORD_BOT_TOKEN
+    description: Discord bot token for the orchestrator bot
+    required: false
+  - name: DISCORD_ALLOWED_USERS
+    description: Comma-separated human Discord user IDs
+    required: false
+  - name: DISCORD_HOME_CHANNEL
+    description: Channel ID for reports and proactive messages
+    required: false

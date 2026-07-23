@@ -1,0 +1,44 @@
+model:
+  provider: nous
+  # Pick a Nous Portal model available on your account, e.g.:
+  # default: deepseek/deepseek-v4-pro
+  # default: tencent/hy3:free
+  default: deepseek/deepseek-v4-pro
+  base_url: https://inference-api.nousresearch.com/v1
+
+agent:
+  max_turns: 60
+  verbose: false
+  reasoning_effort: medium
+
+# Enable kanban tools for Discord + CLI orchestrator sessions
+toolsets:
+  - hermes-cli
+  - kanban
+
+platform_toolsets:
+  cli:
+    - hermes-cli
+    - kanban
+  discord:
+    - hermes-discord
+    - kanban
+
+kanban:
+  dispatch_in_gateway: true
+  dispatch_interval_seconds: 60
+  failure_limit: 2
+  orchestrator_profile: orchestrator
+  default_assignee: generalist
+  # Orchestrator splits work explicitly in chat (not auto-decomposer)
+  auto_decompose: false
+  auto_decompose_per_tick: 3
+  dispatch_stale_timeout_seconds: 14400
+
+terminal:
+  backend: local
+  timeout: 1800
+
+memory:
+  memory_enabled: true
+  user_profile_enabled: true
