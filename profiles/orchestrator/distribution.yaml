@@ -2,7 +2,7 @@ name: orchestrator
 version: 1.0.0
 description: >-
   Fleet lead for Hermes Kanban. Analyzes user requests, splits work into
-  kanban tasks for coder, reviews handoffs, reports back.
+  kanban tasks, routes to generalist/coder, reviews handoffs, reports back.
 hermes_requires: ">=0.19.0"
 author: keepConcentration
 license: MIT

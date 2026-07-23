@@ -29,7 +29,7 @@ kanban:
   dispatch_interval_seconds: 60
   failure_limit: 2
   orchestrator_profile: orchestrator
-  default_assignee: coder
+  default_assignee: generalist
   # Orchestrator splits work explicitly in chat (not auto-decomposer)
   auto_decompose: false
   auto_decompose_per_tick: 3
