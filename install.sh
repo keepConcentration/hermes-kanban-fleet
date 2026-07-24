@@ -24,9 +24,9 @@ done
 
 echo
 echo "== Applying profile descriptions =="
-hermes profile describe orchestrator --text "Orchestrator: fleet lead. Splits Kanban work to generalist/coder, reviews handoffs, final user report."
-hermes profile describe generalist --text "Generalist: Cursor ACP worker for routine/medium Kanban tasks."
-hermes profile describe coder --text "Coder: Claude Code ACP worker for hard coding tasks."
+hermes profile describe orchestrator --text "Orchestrator: fleet lead. Splits Kanban work directly to generalist/coder, reviews handoffs, final user report. No coding."
+hermes profile describe generalist --text "Generalist: Cursor ACP Kanban worker for routine/medium tasks."
+hermes profile describe coder --text "Coder: Claude Code ACP Kanban worker for hard coding tasks."
 
 echo
 echo "== Kanban init =="
@@ -37,12 +37,11 @@ cat <<'EOF'
 Done.
 
 Next steps:
-  1. Copy profiles/*/.env.EXAMPLE into each installed profile's .env and fill secrets.
+  1. Copy profiles/*/.env.EXAMPLE into each installed profile's .env and fill secrets (ACP paths for workers).
   2. hermes -p orchestrator model
   3. Configure Cursor ACP in generalist .env
   4. npm i -g @agentclientprotocol/claude-agent-acp && claude auth
-  5. hermes -p orchestrator gateway start
-  6. (optional) start generalist/coder gateways for Discord bots
+  5. hermes -p orchestrator gateway start   # owns Kanban dispatch
 
 Profiles:
   orchestrator chat

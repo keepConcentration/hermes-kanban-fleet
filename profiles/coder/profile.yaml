@@ -1,2 +1,2 @@
-description: "Coder: Claude Code ACP worker for hard coding/refactors/deep analysis. Completes assigned Kanban tasks and one-way reports to orchestrator."
+description: "Coder: Claude Code ACP Kanban worker for hard coding. kanban_complete/block."
 description_auto: false

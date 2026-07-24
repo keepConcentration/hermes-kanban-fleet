@@ -8,13 +8,12 @@ A ready-to-install **Hermes multi-agent Kanban fleet**:
 | `generalist` | Routine / medium tasks | Cursor ACP (`copilot-acp`) |
 | `coder` | Hard coding / deep implementation | Claude Code ACP |
 
-Workers complete Kanban cards and optionally send a **one-way Discord @mention report** to the orchestrator. Workers use `DISCORD_ALLOW_BOTS=none` so bot?bot reply loops cannot form.
+Orchestrator assigns child tasks **directly** to `generalist` or `coder`. Workers run as Kanban dispatcher spawns (`HERMES_KANBAN_TASK`), call `kanban_*` tools, and finish with `kanban_complete` / `kanban_block`. The board is the source of truth.
 
 ## Requirements
 
 - [Hermes Agent](https://hermes-agent.nousresearch.com/) `>= 0.19`
 - Git
-- (Optional) Discord bots — one token per profile
 - (Optional) Cursor Agent CLI for `generalist`
 - (Optional) Claude Code + `@agentclientprotocol/claude-agent-acp` for `coder`
 - (Optional) Nous Portal login for `orchestrator`
@@ -45,7 +44,7 @@ Then copy env templates and fill secrets:
 ```bash
 # after install, profiles live under your Hermes home, e.g.:
 #   %LOCALAPPDATA%\hermes\profiles\<name>\   (Windows)
-#   ~/.hermes/profiles/<name>/               (Unix)
+#   ~/.hermes/profiles\<name>/               (Unix)
 
 cp profiles/orchestrator/.env.EXAMPLE  "$HERMES_HOME/profiles/orchestrator/.env"   # adjust path
 cp profiles/generalist/.env.EXAMPLE    "$HERMES_HOME/profiles/generalist/.env"
@@ -59,31 +58,20 @@ hermes -p orchestrator model          # Nous Portal
 # configure Cursor ACP paths in generalist .env
 # npm i -g @agentclientprotocol/claude-agent-acp && claude auth
 hermes kanban init
-hermes -p orchestrator gateway start
-hermes -p generalist gateway start    # if using Discord workers
-hermes -p coder gateway start
+hermes -p orchestrator gateway start # owns Kanban dispatch
 ```
+
+Worker gateways are optional (only needed if those profiles also chat on messaging platforms). Kanban workers are spawned by the orchestrator gateway's dispatcher.
 
 ## Workflow (summary)
 
-1. User asks **orchestrator** (Discord or CLI).
+1. User asks **orchestrator** (CLI / gateway chat).
 2. Orchestrator creates a parent task (`assignee=orchestrator`) + child tasks.
-3. Hard work ? `coder`, else ? `generalist`.
-4. Dispatcher (inside gateway) spawns workers; they `kanban_complete` + optional Discord report.
-5. Orchestrator reviews, closes parent, reports to the user.
+3. Hard work ? `coder`, else ? `generalist` (direct assignees — no relay profile).
+4. Dispatcher spawns workers; they `kanban_show` ? work ? `kanban_complete` / `kanban_block`.
+5. Orchestrator reviews board handoffs, closes parent, reports to the user.
 
 See [docs/workflow.md](docs/workflow.md).
-
-## Discord anti-loop layout
-
-| Profile | `DISCORD_ALLOW_BOTS` |
-|---------|----------------------|
-| orchestrator | `mentions` (accept worker @reports) |
-| generalist / coder | `none` (never reply to bots) |
-
-Also set `DISCORD_REPLY_TO_MODE=off` and `DISCORD_ALLOW_MENTION_REPLIED_USER=false` on all three.
-
-> `DISCORD_ALLOWED_USERS` only gates **humans**. Bot traffic is gated by `DISCORD_ALLOW_BOTS`.
 
 ## Repo layout
 

@@ -1,16 +1,13 @@
 name: coder
-version: 1.0.0
+version: 1.1.0
 description: >-
   Hermes Kanban worker for hard coding tasks. Uses Claude Code ACP via
-  @agentclientprotocol/claude-agent-acp. Completes assigned cards and
-  one-way reports to orchestrator.
+  @agentclientprotocol/claude-agent-acp. Completes assigned cards via
+  kanban_* tools.
 hermes_requires: ">=0.19.0"
 author: keepConcentration
 license: MIT
 env_requires:
-  - name: DISCORD_BOT_TOKEN
-    description: Discord bot token for the coder bot
-    required: false
   - name: HERMES_COPILOT_ACP_COMMAND
     description: Path to node.exe for launching claude-agent-acp
     required: true

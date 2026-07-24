@@ -11,7 +11,7 @@ agent:
   verbose: false
   reasoning_effort: medium
 
-# Enable kanban tools for Discord + CLI orchestrator sessions
+# Enable kanban tools for orchestrator sessions
 toolsets:
   - hermes-cli
   - kanban
@@ -19,9 +19,6 @@ toolsets:
 platform_toolsets:
   cli:
     - hermes-cli
-    - kanban
-  discord:
-    - hermes-discord
     - kanban
 
 kanban:

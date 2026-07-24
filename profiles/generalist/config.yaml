@@ -6,6 +6,20 @@ agent:
   max_turns: 80
   verbose: false
 
+# Required so kanban_* check_fn passes for this profile
+toolsets:
+  - hermes-cli
+  - kanban
+
+platform_toolsets:
+  cli:
+    - hermes-cli
+    - kanban
+
+kanban:
+  # Dispatcher is owned by orchestrator
+  dispatch_in_gateway: false
+
 terminal:
   backend: local
   timeout: 1800

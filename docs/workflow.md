@@ -6,13 +6,16 @@
 User
   ?
   ?
-orchestrator  ??kanban_create???  generalist  (Cursor ACP)
-  ?                         ????  coder       (Claude Code ACP)
+orchestrator ??kanban_create??? generalist  (Cursor ACP)
+  ?                         ???? coder       (Claude Code ACP)
   ?                                    ?
-  ?????? kanban_complete + Discord @report ???
+  ?????? kanban_complete / kanban_block ????
+  ?
   ?
 User (final report)
 ```
+
+No relay / bridge profile. Children are assigned **directly** to worker profiles.
 
 ## Routing heuristic
 
@@ -33,27 +36,32 @@ parent  assignee=orchestrator   status tracks the whole user request
   ?? child  …
 ```
 
+Task bodies should include goals, acceptance criteria, constraints, and absolute workspace paths (`dir:C:\...` or `scratch`). Do **not** use a `delegate:` header — the assignee field is the route.
+
 When all children are `done`, the parent becomes ready again so orchestrator can review and `kanban_complete`.
 
-## Discord one-way report
+## Worker lifecycle
 
-Workers:
+Dispatcher sets `HERMES_KANBAN_TASK` and spawns `hermes -p <assignee>`.
 
-1. `kanban_complete(...)`
-2. Post once to the shared home channel mentioning the orchestrator bot ID
-3. Stop (no bot reply chains)
+1. `kanban_show()`
+2. Work in `$HERMES_KANBAN_WORKSPACE` / task `workspace_path`
+3. `kanban_heartbeat` on long runs
+4. `kanban_complete(summary=..., metadata=...)` or `kanban_block(reason=...)`
 
-Orchestrator:
+Workers have `kanban` in their profile `toolsets` so lifecycle tools are available. They set `kanban.dispatch_in_gateway: false` so only the orchestrator gateway dispatches.
 
-- May process the mention
-- Must not `@` workers back; use Kanban for follow-ups
+## Orchestrator rules
+
+- **No coding.** Do not patch/write source or run build/debug terminals for implementation. Always spawn a worker child.
+- Plan, operate Kanban, review handoffs, report to the human.
 
 ## Gateway
 
-Kanban dispatch runs inside the gateway (`kanban.dispatch_in_gateway: true` on orchestrator).
+Kanban dispatch runs inside the orchestrator gateway (`kanban.dispatch_in_gateway: true`).
 
 ```bash
 hermes -p orchestrator gateway start
 ```
 
-Start worker gateways only if those bots should be online on Discord.
+Workers do not need a running gateway for Kanban execution; the dispatcher spawns CLI worker processes.
