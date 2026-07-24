@@ -1,17 +1,20 @@
 # Fleet workflow
 
+![Fleet workflow diagram](workflow.png)
+
 ## Roles
 
 ```text
 User
-  ?
-  ?
-orchestrator ??kanban_create??? generalist  (Cursor ACP)
-  ?                         ???? coder       (Claude Code ACP)
-  ?                                    ?
-  ?????? kanban_complete / kanban_block ????
-  ?
-  ?
+  |
+  v
+orchestrator --kanban_create--> generalist  (Cursor ACP)
+                 |                 |
+                 +---------------> coder     (Claude Code ACP)
+                                   |
+              kanban_complete / kanban_block
+                                   |
+                                   v
 User (final report)
 ```
 
@@ -32,8 +35,8 @@ Assign to **`generalist`** otherwise (research writeups, light edits, ops, docs,
 
 ```text
 parent  assignee=orchestrator   status tracks the whole user request
-  ?? child  assignee=generalist|coder
-  ?? child  …
+  |- child  assignee=generalist|coder
+  |- child  …
 ```
 
 Task bodies should include goals, acceptance criteria, constraints, and absolute workspace paths (`dir:C:\...` or `scratch`). Do **not** use a `delegate:` header — the assignee field is the route.
