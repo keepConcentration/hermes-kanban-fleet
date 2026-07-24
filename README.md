@@ -2,6 +2,8 @@
 
 A ready-to-install **Hermes multi-agent Kanban fleet**:
 
+![hermes-kanban-fleet workflow](docs/workflow.png)
+
 | Profile | Role | Suggested model backend |
 |---------|------|-------------------------|
 | `orchestrator` | Analyze requests, split Kanban work, review, final report | Nous Portal |
